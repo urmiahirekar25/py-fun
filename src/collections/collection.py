@@ -1,3 +1,4 @@
+
 from typing import Any, Iterator, TypeVar, Generic, Self
 
 # restrict generic type T to only accept given types
@@ -49,7 +50,7 @@ class Collection(Generic[T]):
         Returns:
             True if element is in the collection, False otherwise.
         """
-        return False
+        return item in self._items
 
     def size(self) -> int:
         """
@@ -58,7 +59,7 @@ class Collection(Generic[T]):
         Returns:
             the number of items in the collection.
         """
-        return 0
+        return len(self._items)
 
     @classmethod
     def zip(cls, l1: 'Collection[list]', l2: 'Collection[list]') -> 'Collection[tuple]':
@@ -72,24 +73,40 @@ class Collection(Generic[T]):
         Returns:
             Collection of pairs zipped from each input Collection.
         """
-        return []
+        return cls(*zip(l1, l2))
 
-    def pset(_self) -> set[set[T]]:
+    def pset(self) -> list[set[T]]:
         """
         Return the power set of this Collection using backtracking.
 
         Returns:
             The power set of this Collection.
         """
-        return set()
+        return list(self.pset_gen())
 
-    def pset_gen(self) -> Iterator['set[T]']:
+    def pset_gen(self) -> Iterator[set[T]]:
         """
         Generator that yields each subset using backtracking.
-        
+
         Returns:
             Generator object for the power set of this Collection.
         """
+        items = list(dict.fromkeys(self._items))
+
+        def backtrack(index, subset):
+            if index == len(items):
+                yield set(subset)
+                return
+
+            # Exclude the current item.
+            yield from backtrack(index + 1, subset)
+
+            # Include the current item.
+            subset.add(items[index])
+            yield from backtrack(index + 1, subset)
+            subset.remove(items[index])
+
+        yield from backtrack(0, set())
 
     def perm(self) -> list[list[T]]:
         """
@@ -98,17 +115,35 @@ class Collection(Generic[T]):
         Returns:
             The list of permutations of this Collection.
         """
-        return []
+        return list(self.perm_gen())
 
     def perm_gen(self) -> Iterator[list[T]]:
-        """"
+        """
         Generator that yields permutations using backtracking.
 
         Returns:
             Generator object for the list of permutations of this Collection.
         """
-        return []
+        items = list(self._items)
+        used = [False] * len(items)
+        permutation = []
 
+        def backtrack():
+            if len(permutation) == len(items):
+                yield permutation.copy()
+                return
+
+            for index in range(len(items)):
+                if not used[index]:
+                    used[index] = True
+                    permutation.append(items[index])
+
+                    yield from backtrack()
+
+                    permutation.pop()
+                    used[index] = False
+
+        yield from backtrack()
 
     def __contains__(self, item: Any) -> bool:
         """Checks if an item or subset exists in the collection (in-operator)."""
@@ -130,6 +165,6 @@ class Collection(Generic[T]):
                 elements.append(f"{{{", ".join(repr(e) for e in item)}}}")
             else:
                 elements.append(repr(item))
-        # 
+        #
         r = f"{', '.join(elements)}"
         return f"[{r}]" if isinstance(self._items, list) else f"{{{r}}}"

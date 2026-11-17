@@ -5,3 +5,5 @@
 from .main import main
 from .calculator import Calculator
 from .collections import Collection
+
+__all__ = ["main", "Calculator", "Collection"]
