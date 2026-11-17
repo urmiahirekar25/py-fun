@@ -1,53 +1,68 @@
+#------------------------------------------------------------------------------
+# .gitignore with patterns of files and directories to be ignored by git.
+# //
+# see: https://www.atlassian.com/git/tutorials/saving-changes/gitignore
+#------------------------------------------------------------------------------
+
 # ignore git-module files
 .gitmodules
-.devcontainer/
+.env/
 .vscode/
+.libs/
 
-# README.md
-README.md
+# ignore output directories with generated content
+bin/
+out/
+target/
+*.class
 
-# implementation files
-*_impl.py
+# ignore patch files
+*.patch
 
-# packaging and sphinx documentation files
-dist/
-*.rst
+# ignore Java packaging files
+*.jar
 
-# tmp files and directories
-*tmp/
-*temp/
-*.tmp
-*.temp
-branches/
-
-# log files and directories
-*log/
-*logs/
-*.log
-
-# archive files
+# ignore other archives and encoding files
+*.7z
+*.gz
+*.rar
 *.tar
 *.tgz
+*.tar.gz
 *.zip
+*.uue*
 
-# Sphinx documentation
-docs/_build/
+# ignore folders with libraries (including sym-links)
+lib
+libs
 
-# PyBuilder
-target/
+# ignore folders with branches
+branch/
+branches/
 
-# virtualenv
-.venv/
-venv/
-ENV/
+# ignore folders with javadoc (generated)
+doc/
+docs/
 
-# byte-compiled, optimized, DLL, sphinx files
-__pycache__/
-.cache
-.pytest_cache/
-*.egg-info/
-*doctrees/
-*html/
-*.py[cod]
-*$py.class
-*.so
+# ignore log directories and *.log files (generated)
+log/
+logs/
+*.log
+
+# ignore eclipse IDE project files
+.classpath
+.project
+
+# ignore IntelliJ IDE project files
+.iml
+.idea
+
+# ignore tmp directories, *.tmp and .BAK files
+tmp/
+temp/
+*.tmp
+*.BAK
+*.bak
+
+# ignore OSX hidden files (Mac)
+.DS_Store
