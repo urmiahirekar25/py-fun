@@ -1,0 +1,48 @@
+//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// VSCode project settings file.
+//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+{
+    // Python Code-Runner settings
+    "code-runner.defaultLanguage": "python",
+    "code-runner.showExecutionMessage": false,
+    "code-runner.clearPreviousOutput": true,
+    "code-runner.executorMap": {
+        // "python": "\"$pythonPath\" $fullFileName",
+        "python": "set PYTHONIOENCODING=utf-8 && python -m main",
+    },
+
+    // Python Test-Runner settings, requires module 'pytest'
+    // - verify: python -m pytest --version --> 8.4.2
+    // - install module 'pytest': pip install pytest
+    // 
+    "python.testing.autoTestDiscoverOnSaveEnabled": true,
+    "python.testing.pytestEnabled": true,
+    "python.testing.unittestEnabled": false,
+    "python.testing.unittestArgs": [
+        // "-v", "-s", "${workspaceFolder}/tests", "-p", "test_*.py"
+        "-v", "-s", ".", "-p", "test_*.py"
+    ],
+
+    // Exclude files from being displayed in explorer panel
+    "files.exclude": {
+        "**/__pycache__": true,
+        "**/.pytest_cache": true,
+        "**/*.pyc": true
+    },
+
+    // Start terminal in '${workspaceFolder}', not in user's HOME.
+    // Terminal settings, see https://code.visualstudio.com/docs/terminal/profiles
+    "terminal.integrated.defaultProfile.windows": "Bash",
+    "terminal.integrated.profiles.windows": {
+        "Bash": {
+          "path": ["bash"],
+          "args": ["--init-file", "'${workspaceFolder}'/.vscode/launch-terminal.sh"],
+        //   "args": ["--init-file", "~/.profile"],
+          "icon": "terminal-bash",
+        }
+    },
+    "terminal.integrated.hideOnStartup": "always"   // prevent terminal show-up on startup
+
+
+    // "makefile.configureOnOpen": false,
+}
